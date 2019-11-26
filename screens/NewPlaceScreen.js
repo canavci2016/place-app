@@ -15,12 +15,13 @@ const NewPlaceScreen = props => {
 
     const savePlaceHandler = () => {
         props.addPlace(title);
+        props.navigation.goBack();
     };
 
     return <ScrollView>
         <View style={styles.form}>
-            <Text style={styles.label} onChangeText={titleChangeHandler}>Title</Text>
-            <TextInput style={styles.textInput}/>
+            <Text style={styles.label} >Title</Text>
+            <TextInput onChangeText={titleChangeHandler} style={styles.textInput}/>
             <Button style={styles.saveButton} title={'Save Place'} color={Colors.primary} onPress={savePlaceHandler}/>
         </View>
     </ScrollView>
