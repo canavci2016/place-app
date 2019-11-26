@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Button, TextInput, Platform, ScrollView} from "react-native";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from '../components/HeaderButton';
+import ImagePicker from '../components/ImageSelector';
 import Colors from "../constants/Colors";
 import * as placesActions from '../store/places-actions';
 import {connect} from "react-redux";
@@ -20,8 +21,10 @@ const NewPlaceScreen = props => {
 
     return <ScrollView>
         <View style={styles.form}>
-            <Text style={styles.label} >Title</Text>
+            <Text style={styles.label}>Title</Text>
             <TextInput onChangeText={titleChangeHandler} style={styles.textInput}/>
+            <Text style={styles.label}>Photo</Text>
+            <ImagePicker/>
             <Button style={styles.saveButton} title={'Save Place'} color={Colors.primary} onPress={savePlaceHandler}/>
         </View>
     </ScrollView>
