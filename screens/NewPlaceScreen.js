@@ -1,17 +1,47 @@
-import React from 'react';
-import {View, Text, StyleSheet, Platform} from "react-native";
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, Button, TextInput, Platform, ScrollView} from "react-native";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from '../components/HeaderButton';
-import PlaceListScreen from "./PlaceListScreen";
+import Colors from "../constants/Colors";
+import * as placesActions from '../store/places-actions';
+import {connect} from "react-redux";
 
 const NewPlaceScreen = props => {
-    return <View>
-        <Text>Place List</Text>
-    </View>
+    const [title, setTitle] = useState(null);
 
+    const titleChangeHandler = text => {
+        setTitle(text);
+    };
+
+    const savePlaceHandler = () => {
+        props.addPlace(title);
+    };
+
+    return <ScrollView>
+        <View style={styles.form}>
+            <Text style={styles.label} onChangeText={titleChangeHandler}>Title</Text>
+            <TextInput style={styles.textInput}/>
+            <Button style={styles.saveButton} title={'Save Place'} color={Colors.primary} onPress={savePlaceHandler}/>
+        </View>
+    </ScrollView>
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    form: {
+        margin: 20
+    },
+    label: {
+        fontSize: 18,
+        marginBottom: 15,
+    },
+    textInput: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        marginBottom: 15,
+        paddingVertical: 4,
+        paddingHorizontal: 2,
+    }
+});
 
 NewPlaceScreen.navigationOptions = navData => {
     return {
@@ -27,4 +57,20 @@ NewPlaceScreen.navigationOptions = navData => {
 };
 
 
-export default NewPlaceScreen;
+const mapStateToProps = (state) => {
+    // Redux Store --> Component
+    return {
+        places: state.places,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    // Action
+    return {
+        addPlace: (title) => dispatch(placesActions.addPlace(title)),
+        // Decrease Counter
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewPlaceScreen);
+
