@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import Colors from "../constants/Colors";
 
 const ImageSelector = props => {
-    const [pickedImage, setPickedImage] = useState(null);
+    const [pickedImg, setPickedImage] = useState(null);
 
     const verifyPermission = async () => {
         if (Constants.platform.ios) {
@@ -42,8 +42,7 @@ const ImageSelector = props => {
 
     return <View style={styles.imageContainer}>
         <View style={styles.imagePreview}>
-            {!pickedImage ? <Text>No image picked yet</Text> :
-                <Image style={styles.image} source={{uri: pickedImage}}/>}
+            {!pickedImg ? <Text>No image picked yet</Text> : <Image style={styles.image} source={{uri: pickedImg}}/>}
         </View>
         <Button title={'Take image'} color={Colors.primary} onPress={takeImageHandler}/>
     </View>;
