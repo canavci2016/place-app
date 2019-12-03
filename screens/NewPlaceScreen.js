@@ -9,13 +9,18 @@ import {connect} from "react-redux";
 
 const NewPlaceScreen = props => {
     const [title, setTitle] = useState(null);
+    const [image, setImage] = useState(null);
 
     const titleChangeHandler = text => {
         setTitle(text);
     };
 
+    const imagePathHandler = path => {
+        setImage(path);
+    };
+
     const savePlaceHandler = () => {
-        props.addPlace(title);
+        props.addPlace(title,image);
         props.navigation.goBack();
     };
 
@@ -24,7 +29,7 @@ const NewPlaceScreen = props => {
             <Text style={styles.label}>Title</Text>
             <TextInput onChangeText={titleChangeHandler} style={styles.textInput}/>
             <Text style={styles.label}>Photo</Text>
-            <ImagePicker/>
+            <ImagePicker onImageTaken={imagePathHandler}/>
             <Button style={styles.saveButton} title={'Save Place'} color={Colors.primary} onPress={savePlaceHandler}/>
         </View>
     </ScrollView>
@@ -71,7 +76,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     // Action
     return {
-        addPlace: (title) => dispatch(placesActions.addPlace(title)),
+        addPlace: (title,image) => dispatch(placesActions.addPlace(title,image)),
         // Decrease Counter
     };
 };
