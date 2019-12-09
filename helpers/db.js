@@ -35,5 +35,21 @@ export const insertPlace = (title, imageUri, address, lat, lng) => {
         });
     });
     return promise;
+};
 
+export const fetchPlaces = () => {
+    const promise = new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+            tx.executeSql('select  * from  places',
+                [],
+                (_, result) => {
+                    resolve(result);
+                },
+                (_, error) => {
+                    reject(error);
+                }
+            );
+        });
+    });
+    return promise;
 };
