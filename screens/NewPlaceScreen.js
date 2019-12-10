@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Button, TextInput, Platform, ScrollView} from "r
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from '../components/HeaderButton';
 import ImagePicker from '../components/ImageSelector';
+import LocationPicker from '../components/LocationPicker';
 import Colors from "../constants/Colors";
 import * as placesActions from '../store/places-actions';
 import {connect} from "react-redux";
@@ -20,7 +21,7 @@ const NewPlaceScreen = props => {
     };
 
     const savePlaceHandler = () => {
-        props.addPlace(title,image);
+        props.addPlace(title, image);
         props.navigation.goBack();
     };
 
@@ -30,6 +31,7 @@ const NewPlaceScreen = props => {
             <TextInput onChangeText={titleChangeHandler} style={styles.textInput}/>
             <Text style={styles.label}>Photo</Text>
             <ImagePicker onImageTaken={imagePathHandler}/>
+            <LocationPicker onLocationChoosen={() => {}}/>
             <Button style={styles.saveButton} title={'Save Place'} color={Colors.primary} onPress={savePlaceHandler}/>
         </View>
     </ScrollView>
@@ -76,7 +78,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     // Action
     return {
-        addPlace: (title,image) => dispatch(placesActions.addPlace(title,image)),
+        addPlace: (title, image) => dispatch(placesActions.addPlace(title, image)),
         // Decrease Counter
     };
 };
