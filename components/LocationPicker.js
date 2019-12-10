@@ -4,6 +4,7 @@ import * as Permissions from 'expo-permissions';
 import * as Location from 'expo-location';
 
 import Colors from "../constants/Colors";
+import MapPreview from './MapPreview';
 
 const LocationPicker = props => {
     const [pickedLoc, setPickedLoc] = useState(null);
@@ -48,14 +49,10 @@ const LocationPicker = props => {
 
 
     return <View style={styles.container}>
-        <View style={styles.preview}>
-            {isLoading ? <ActivityIndicator size={'large'} color={Colors.primary}/>
-                : (pickedLoc ? <Image style={styles.image} source={{uri: '&markers=color:blue%7Clabel:S%7C40.702147,-74.015794&markers=color:green%7Clabel:G%7C40.711614,-74.012318\n' +
-                        '&markers=color:red%7Clabel:C%7C40.718217,-73.998284\n' +
-                        '&key= '}}/> :
-                    <Text>No place chosen yet</Text>)
-            }
-        </View>
+
+        <MapPreview style={styles.preview} location={pickedLoc}>
+            {isLoading ? <ActivityIndicator size={'large'} color={Colors.primary}/> : <Text>No place chosen yet</Text>}
+        </MapPreview>
         <Button title={'Get User Location'} color={Colors.primary} onPress={getLocationHandler}/>
     </View>;
 };
@@ -70,8 +67,6 @@ const styles = StyleSheet.create({
         height: 100,
         borderColor: '#ccc',
         borderWidth: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 });
 
