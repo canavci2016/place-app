@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 const NewPlaceScreen = props => {
     const [title, setTitle] = useState(null);
     const [image, setImage] = useState(null);
+    const [selectedLocation, setSelectedLocation] = useState(null);
 
     const titleChangeHandler = text => {
         setTitle(text);
@@ -20,8 +21,13 @@ const NewPlaceScreen = props => {
         setImage(path);
     };
 
+    const locationPickedHandler = coordinates => {
+        setSelectedLocation(coordinates);
+        console.log(coordinates);
+    };
+
     const savePlaceHandler = () => {
-        props.addPlace(title, image);
+        props.addPlace(title, image, selectedLocation);
         props.navigation.goBack();
     };
 
@@ -31,7 +37,7 @@ const NewPlaceScreen = props => {
             <TextInput onChangeText={titleChangeHandler} style={styles.textInput}/>
             <Text style={styles.label}>Photo</Text>
             <ImagePicker onImageTaken={imagePathHandler}/>
-            <LocationPicker onLocationChoosen={() => {}}/>
+            <LocationPicker onLocationPick={locationPickedHandler} navigation={props.navigation}/>
             <Button style={styles.saveButton} title={'Save Place'} color={Colors.primary} onPress={savePlaceHandler}/>
         </View>
     </ScrollView>
@@ -78,7 +84,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     // Action
     return {
-        addPlace: (title, image) => dispatch(placesActions.addPlace(title, image)),
+        addPlace: (title, image, selectedLocation) => dispatch(placesActions.addPlace(title, image, selectedLocation)),
         // Decrease Counter
     };
 };

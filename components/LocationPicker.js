@@ -10,6 +10,16 @@ const LocationPicker = props => {
     const [pickedLoc, setPickedLoc] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const mapPickedLocation = props.navigation.getParam('pickedLocation');
+
+    useEffect(() => {
+        if (mapPickedLocation) {
+            console.log(mapPickedLocation);
+            setPickedLoc(mapPickedLocation);
+            props.onLocationPick(mapPickedLocation);
+        }
+    }, [mapPickedLocation]);
+
     const verifyPermission = async () => {
         const result = await Permissions.askAsync(Permissions.LOCATION);
         if (result.status !== 'granted') {
@@ -32,8 +42,11 @@ const LocationPicker = props => {
         try {
             setIsLoading(true);
             const location = await Location.getCurrentPositionAsync({timeout: 5000});
-            console.log(location);
             setPickedLoc({
+                lat: location.coords.latitude,
+                lng: location.coords.longitude,
+            });
+            props.onLocationPick({
                 lat: location.coords.latitude,
                 lng: location.coords.longitude,
             });
@@ -46,14 +59,19 @@ const LocationPicker = props => {
         }
         setIsLoading(false);
     };
-
+    const pickOnMapHandler = async () => {
+        props.navigation.navigate('Map');
+    };
 
     return <View style={styles.container}>
 
-        <MapPreview style={styles.preview} location={pickedLoc}>
+        <MapPreview style={styles.preview} location={pickedLoc} onPress={pickOnMapHandler}>
             {isLoading ? <ActivityIndicator size={'large'} color={Colors.primary}/> : <Text>No place chosen yet</Text>}
         </MapPreview>
-        <Button title={'Get User Location'} color={Colors.primary} onPress={getLocationHandler}/>
+        <View style={styles.actions}>
+            <Button title={'Get User Location'} color={Colors.primary} onPress={getLocationHandler}/>
+            <Button title={'Pick On Map'} color={Colors.primary} onPress={pickOnMapHandler}/>
+        </View>
     </View>;
 };
 
@@ -68,6 +86,11 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderWidth: 1,
     },
+    actions: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+    }
 });
 
 

@@ -5,11 +5,10 @@ import ENV from '../.env';
 
 const MapPreView = props => {
     const imagePreviewUrl = props.location ? `https://maps.googleapis.com/maps/api/staticmap?center=${props.location.lat},${props.location.lng}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${props.location.lat},${props.location.lng}&key=${ENV().googleApiKey}` : null;
-    console.log(imagePreviewUrl);
     return (
-        <View style={{...styles.preview, ...props.style}}>
+        <TouchableOpacity onPress={props.onPress} style={{...styles.preview, ...props.style}}>
             {imagePreviewUrl ? <Image style={styles.image} source={{uri: imagePreviewUrl}}/> : props.children}
-        </View>
+        </TouchableOpacity>
     );
 };
 
